@@ -3,17 +3,27 @@ module.exports = class Mar {
 		this._files = json
 	}
 
-	fromFile(path) {
+	static fromFile(path) {
 
 	}
 
-	fromDirectory(base) {
+	toString() {
+		return JSON.stringify(this._files)
+	}
+
+	static fromDirectory(base) {
+		let obj = {};
 		let name = path.parse(base).base
-		for(let file in fs.lstatSync(base)) {
-			log.d(file)
+		for(let file of fs.readdirSync(base)) {
+			let filepath = path.resolve(base, file)
+			let content = fs.readFileSync(filepath).toString()
+			content = content.replace(/[\r\t]/g, '')
+			obj[file] = content
 		}
+		return new Mar(obj).toString()
 	}
 }
 
 const path = require('path')
 const fs = require('fs')
+const log = require('./log.js')

@@ -21,6 +21,7 @@ let yarn, npm, bower
 try {
 	yarn = which.sync('yarn');
 	log.v('yarn check passed', yarn)
+	process.env.YARN_PATH = yarn;
 }catch(e) {
 	log.w('yarn is not installed, for faster compile times, run npm i -g yarn')
 	yarn = null
@@ -29,6 +30,7 @@ try {
 try {
 	npm = which.sync('npm');
 	log.v('npm check passed', npm)
+	process.env.NPM_PATH = npm;
 }catch(e) {
 	log.w('how do you not have npm installed? reinstall node')
 	npm = null
@@ -37,6 +39,7 @@ try {
 try {
 	bower = which.sync('bower');
 	log.v('bower check passed', bower)
+	process.env.BOWER_PATH = bower;
 }catch(e) {
 	log.w('bower is not installed, to use it in modules, run npm i -g bower')
 	bower = null

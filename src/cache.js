@@ -13,6 +13,13 @@ module.exports = {
 
 		let config = JSON.parse(fs.readFileSync(options.config))
 
+		// normalize source keys
+		for(let key in config.sources) {
+			let configDirectory = path.parse(options.config).dir;
+			let sourceDirectory = path.resolve(configDirectory, config.sources[key])
+			config.sources[key] = sourceDirectory;
+		}
+
 		let symbols = {};
 
 		log.v(config)
@@ -24,6 +31,7 @@ module.exports = {
 
 		// log.d(symbols);
 
+		// HACK use a csprng ffs
 		function pid() {
 			let str = "";
 			for(let i = 0; i < 32; i ++) str += "0123456789ABCDEF"[Math.floor(Math.random() * 16)]
@@ -37,10 +45,9 @@ module.exports = {
 			// if we havent created the moduleType folder, do that
 			if(!fs.existsSync(moduleTypePath)) {
 				mkdirp.sync(moduleTypePath)
-				//TODO ACTUALLY GETT THE MAR/zip HERE
+				let marString = getModule(obj.source, obj.module)
 				let moduleMarPath = path.join(moduleTypePath, 'module.mar')
-				log.d(moduleMarPath)
-				fs.writeFileSync(moduleMarPath, 'PLACEHOLDER')
+				fs.writeFileSync(moduleMarPath, marString)
 			}
 
 			let fileObject = {};
@@ -49,8 +56,18 @@ module.exports = {
 			fileObject.par = obj.par || {}
 
 			fs.writeFileSync(entityFilepath, JSON.stringify(fileObject))
+
+			//TODO install dependencies
+			//process.env.YARN_PATH and NPM_PATH exist here
 		}
 
+		function getModule(src, type) {
+			if(true /* TODO src is not a URL */) {
+				let modulePath = path.join(config.sources[src], type)
+				let marObj = mar.fromDirectory(modulePath)
+				return marObj.toString()
+			}
+		}
 	}
 }
 
@@ -58,3 +75,4 @@ const mkdirp = require('mkdirp')
 const fs = require('fs')
 const path = require('path')
 const log = require('./log.js')
+const mar = require('./mar.js')
