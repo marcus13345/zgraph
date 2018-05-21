@@ -1,0 +1,17 @@
+{
+  "name": "zgraph",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/zgraph.js",
+  "bin": {
+    "zgraph": "src/zgraph.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "which": "^1.3.0"
+  }
+}
