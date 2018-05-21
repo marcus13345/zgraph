@@ -77,15 +77,15 @@ function parseArgs() {
 
 	//normalize
 	if('dir' in flags) {
-		flags.dir = path.normalize(flags.dir);
+		flags.dir = path.resolve(flags.dir)
 	} else {
-		
+		flags.dir = path.resolve(process.cwd())
 	}
 
 	if('cache' in flags) {
-		flags.cache = path.normalize(flags)
+		flags.cache = path.resolve(flags.cache)
 	} else {
-		flags.cache = path.
+		flags.cache = path.resolve(flags.dir, 'cache')
 	}
 
 	return flags
