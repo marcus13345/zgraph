@@ -50,9 +50,9 @@ function deploy() {
 
 function parseArgs() {
 	let shortcuts = {
-		d: "dir"
+		d: 'dir'
 	}
-	let flags = {}, flag
+	let flags = {}, flag = 'cmd'
 	let args = process.argv.slice(2);
 	for(let arg of args) {
 		if(arg.startsWith('--')) {
@@ -66,9 +66,11 @@ function parseArgs() {
 			flags[flag] = true
 		} else {
 			let val = arg
-			if(flag in flags) flags[flag] = val
+			flags[flag] = val
 		}
 	}
+	if(flags.cmd === 'c') flags.cmd = 'compile'
+	if(flags.cmd === 'd') flags.cmd = 'deploy'
 	return flags
 }
 
