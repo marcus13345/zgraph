@@ -10,6 +10,7 @@ module.exports = {
 const path = require('path')
 const fs = require('fs')
 const which = require('which')
+const rimraf = require('rimraf')
 const log = require('./log.js')
 const cache = require('./cache.js')
 
@@ -41,8 +42,9 @@ try {
 	bower = null
 }
 
-function compile() {
-	cache.construct
+function compile(options) {
+	rimraf.sync(options.cache)
+	cache.construct(options)
 }
 
 function deploy() {
@@ -88,12 +90,19 @@ function parseArgs() {
 		flags.cache = path.resolve(flags.dir, 'cache')
 	}
 
+	// TODO make this if statement function
+	// if('cache' in flags) {
+		// flags.cache = path.resolve(flags.cache)
+	// } else {
+		flags.config = path.resolve(flags.dir, 'config.json')
+	// }
+
 	return flags
 }
 
 function cli() {
 	let options = parseArgs()
-	console.dir(options);
+	log.d(options)
 	if(options.cmd === 'compile') {
 		compile(options);
 	}

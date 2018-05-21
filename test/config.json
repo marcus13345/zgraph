@@ -4,8 +4,16 @@
 		"local": "./modules"
 	},
 	"instances": {
-		"Thing": {
-			"module": ""
+		"Thing1": {
+			"module": "thing",
+			"source": "local"
+		},
+		"Thing2": {
+			"module": "thing",
+			"source": "local",
+			"par": {
+				"idk": "man"
+			}
 		}
 	}
 }
