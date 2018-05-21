@@ -11,6 +11,7 @@ const path = require('path')
 const fs = require('fs')
 const which = require('which')
 const log = require('./log.js')
+const cache = require('./cache.js')
 
 log.v('checking for globally installed tools...');
 
@@ -41,7 +42,7 @@ try {
 }
 
 function compile() {
-
+	cache.construct
 }
 
 function deploy() {
@@ -69,14 +70,33 @@ function parseArgs() {
 			flags[flag] = val
 		}
 	}
+
+	//sanitize
 	if(flags.cmd === 'c') flags.cmd = 'compile'
 	if(flags.cmd === 'd') flags.cmd = 'deploy'
+
+	//normalize
+	if('dir' in flags) {
+		flags.dir = path.normalize(flags.dir);
+	} else {
+		
+	}
+
+	if('cache' in flags) {
+		flags.cache = path.normalize(flags)
+	} else {
+		flags.cache = path.
+	}
+
 	return flags
 }
 
 function cli() {
 	let options = parseArgs()
-	console.dir(options)
+	console.dir(options);
+	if(options.cmd === 'compile') {
+		compile(options);
+	}
 }
 
 if (require.main === module) cli()
